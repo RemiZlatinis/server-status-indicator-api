@@ -12,4 +12,4 @@ fi
 
 cd /etc/server-status-indicator-api/
 export API_TOKEN=$(cat .token) 
-gunicorn -b 0.0.0.0:8000 wsgi:app --log-level=info --log-file=/var/log/gunicorn.log
+gunicorn -b 0.0.0.0:{PORT} wsgi:app --log-level=info --log-file=/var/log/gunicorn.log
