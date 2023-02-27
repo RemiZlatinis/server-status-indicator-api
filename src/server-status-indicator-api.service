@@ -1,0 +1,11 @@
+[Unit]
+Description=Server Status Indicator API
+After=network.target
+
+[Service]
+ExecStart=/etc/server-status-indicator-api/start-server.sh
+Restart=always
+StandardOutput=file:/var/log/server-status-indicator-api.log
+
+[Install]
+WantedBy=multi-user.target

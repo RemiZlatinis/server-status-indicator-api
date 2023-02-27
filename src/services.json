@@ -1,0 +1,10 @@
+[
+  {
+    "name": "Demo Service",
+    "check-script": "./scripts/checks-demo-service.sh"
+  },
+  {
+    "name": "System Updates",
+    "check-script": "./scripts/checks-system-updates.sh"
+  }
+]
