@@ -1,12 +1,16 @@
-import json
-import subprocess
 import os
 import sys
 
 
 from flask import Flask, jsonify, request
 
+
+from database import get_services
+from scheduler import schedule_task, update_database
+
 TOKEN = os.environ.get("API_TOKEN", None)
+DATABASE_UPDATE_MIN_INTERVAL = os.environ.get(
+    "DATABASE_UPDATE_MIN_INTERVAL", 60)
 SERVICES_FILE_PATH = '/etc/server-status-indicator-api/services.json'
 
 
@@ -18,6 +22,13 @@ def create_app():
         print("API_TOKEN environment variable not set")
         sys.exit(1)
 
+    print("Initialize scheduler")
+    # Creates a scheduler to periodically update the services status
+    schedule_task(DATABASE_UPDATE_MIN_INTERVAL,
+                  update_database, SERVICES_FILE_PATH)
+
+    print("Listening")
+
     @app.route('/services')
     def services():
         # Check if is an authenticated request
@@ -25,25 +36,8 @@ def create_app():
         if token != f'Token {TOKEN}':
             return jsonify({'error': 'Unauthorized access'}), 401
 
-        # Read the list of services and their check scripts
-        services_file = SERVICES_FILE_PATH
-        with open(services_file, encoding='utf-8') as file:
-            services = json.load(file)
-
-        data = []
-        for service in services:
-            check_script = service['check-script']
-
-            # Execute the check script and get the service status
-            try:
-                status = subprocess.check_output(
-                    ['bash', check_script]).decode('utf-8').strip().splitlines()[-1]
-                data.append({'name': service['name'], 'status': status})
-            except:
-                print('Invalid script output')
-
         # Return the list of services along with there status
-        return jsonify(data)
+        return jsonify(get_services())
 
     return app
 

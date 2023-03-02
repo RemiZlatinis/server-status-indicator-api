@@ -12,4 +12,5 @@ fi
 
 cd /etc/server-status-indicator-api/
 export API_TOKEN=$(cat .token) 
+export DATABASE_UPDATE_MIN_INTERVAL=$(cat .min_interval) 
 gunicorn -b 0.0.0.0:{PORT} wsgi:app --log-level=info --log-file=/var/log/gunicorn.log
