@@ -12,13 +12,14 @@ else
     exit 1
 fi
 
-# Refresh the package list
-sudo $PM update 2>&1
+
 
 # Get the number of available updates
 if [ $PM = "pacman" ]; then
+    sudo pacman -Syy # Update the local database
     NUM_UPDATES=$(sudo pacman -Qu | wc -l)
 else
+    sudo $PM update 2>&1 # Refresh the package list
     NUM_UPDATES=$(sudo apt-get -s upgrade | grep -c ^Inst)
 fi
 
