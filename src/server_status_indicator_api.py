@@ -9,8 +9,8 @@ from database import get_services
 from scheduler import schedule_task, update_database
 
 TOKEN = os.environ.get("API_TOKEN", None)
-DATABASE_UPDATE_MIN_INTERVAL = os.environ.get(
-    "DATABASE_UPDATE_MIN_INTERVAL", 60)
+DATABASE_UPDATE_MIN_INTERVAL = int(os.environ.get(
+    "DATABASE_UPDATE_MIN_INTERVAL", 60))
 SERVICES_FILE_PATH = '/etc/server-status-indicator-api/services.json'
 
 
