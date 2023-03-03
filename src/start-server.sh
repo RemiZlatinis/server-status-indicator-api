@@ -1,13 +1,13 @@
 #!/bin/bash
 
 if ! command -v flask &> /dev/null; then
-    echo "Flask is not installed. Installing..."
-    pip3 install flask
+    echo "Flask is not installed."
+    exit 1
 fi
 
 if ! command -v gunicorn &> /dev/null; then
-    echo "Gunicorn is not installed. Installing..."
-    pip3 install gunicorn
+    echo "Gunicorn is not installed."
+    exit 1
 fi
 
 cd /etc/server-status-indicator-api/
